@@ -20,7 +20,7 @@ app.get('/message', function (req, res) {
 app.post('/message', function (req, res) {
     console.log(req.query);
     if (req.query.message === 'ok') {
-        response.error(req, res, 'Error simulado', 500);
+        response.error(req, res, 'Error inesperado', 500, 'Es solo uan simulación de los errores');
     } else {
         response.success(req, res, 'Creado correctamente', 201);
     }
