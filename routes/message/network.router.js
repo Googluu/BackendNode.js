@@ -1,15 +1,17 @@
 const express = require('express');
-const controller = require('./controller.router');
+const controller = require('./controller');
 const response = require('../../network/response');
 
 const router = express.Router();
 
 router.get('/', function (req, res) {
-    console.log(req.headers);
-        res.header({
-            "custom-header": "Nuestro valor personalizado"
+    controller.getMessage()
+        .then((messageList) => {
+            response.success(req, res, messageList, 200);
         })
-    response.success(req, res, 'Lista de mensages');
+        .catch(e => {
+            response.error(req, res, 'Unexpected error: ', 500, e);
+        })
 });
 
 router.post('/', function (req, res) {
