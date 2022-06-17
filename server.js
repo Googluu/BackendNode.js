@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 
 const response = require('./network/response');
 
+const path = require('path') || 3000;
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -24,6 +26,7 @@ app.post('/message', function (req, res) {
     }
 });
 
+app.use('/app', express.static(path.join(__dirname, 'public')));
 
 app.listen(3000);
 console.log('La aplicación está escuchando en http://localhost:3000');
