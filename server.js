@@ -1,18 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/message', function (req, res) {
     res.send('Lista de mensajes');
 });
 
 app.post('/message', function (req, res) {
-    res.send('Mensaje añadido');
+    console.log(req.query);
+    console.log(req.body);
+    res.send('Mensaje ' + req.body.text + ' añadido');
 });
 
-// app.use('/', function(req, res) {
-//     res.send('Hola');
-// })
+
 
 app.listen(3000);
 console.log('La aplicación está escuchando en http://localhost:3000');
