@@ -10,25 +10,18 @@ db.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => console.error('[db]', err));
 
 const addMessage = message => {
-    // list.push(message);
     const myMessage = new Model(message);
     myMessage.save();
 }
 
-async function getMessage(message) {
-    // return list;
-    const messages = await Model.find();
+async function getMessage(filterUser) {
+    let filter = {};
+    if ( filterUser !== null) {
+        filter = { user: filterUser };
+    }
+    const messages = await Model.find(filter);
     return(messages);
 }
-
-// async function updateText(id, message) {
-//     const foundMessage = await Model.findById(id)
-
-//     foundMessage.message = message;
-
-//     const newMessage = await foundMessage.save();
-//     return newMessage;
-// }
 
 async function updateText(id, message){
     const updatedMessage = await Model.findByIdAndUpdate(id, {message}, {new: true});
