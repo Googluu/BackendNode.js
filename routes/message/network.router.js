@@ -1,8 +1,13 @@
 const express = require('express');
+const multer = require('multer');
 const controller = require('./controller');
 const response = require('../../network/response');
 
 const router = express.Router();
+
+const upload = multer({
+    dest: 'public/files/',
+});
 
 router.get('/', function (req, res) {
     const filterMessage = req.query.user || null;
@@ -14,15 +19,15 @@ router.get('/', function (req, res) {
             response.error(req, res, 'Unexpected error: ', 500, e);
         })
 });
+// Se añadio upload como middleware express es un punto que va a pasar antes de entrar a nuestra función.
+router.post('/', upload.single('file'), function (req, res) {
 
-router.post('/', function (req, res) {
-    
-    controller.addMessage(req.body.user, req.body.message)
+    controller.addMessage(req.body.chat, req.body.user, req.body.message, req.file)
         .then((fullMessage) => {
             response.success(req, res, fullMessage, 201);
         })
         .catch(error => {
-            response.error(req, res, 'Información invalidad', 400, 'Error en el controlador ');
+            response.error(req, res, 'Información invalidad', 400, 'Error en el controlador', error);
         });
 });
 
