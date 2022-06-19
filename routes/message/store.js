@@ -1,3 +1,4 @@
+const { populate } = require('./model');
 const Model = require('./model');
 
 const addMessage = message => {
@@ -6,12 +7,21 @@ const addMessage = message => {
 }
 
 async function getMessage(filterUser) {
-    let filter = {};
-    if ( filterUser !== null) {
-        filter = { user: filterUser };
-    }
-    const messages = await Model.find(filter);
-    return(messages);
+    return new Promise((resolve, reject) => {
+        let filter = {};
+        if ( filterUser !== null) {
+            filter = { user: filterUser };
+        }
+        Model.find(filter)
+            .populate('user')
+            .exec((error, populate) => {
+                if (error) {
+                    reject(error)
+                    return false;
+                }
+                resolve(populate);
+            })
+    })
 }
 
 function removeMessage(id) {
