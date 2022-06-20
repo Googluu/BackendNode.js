@@ -1,19 +1,29 @@
 const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+
+const { config } = require('./config/config');
+
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const routerApi = require('./routes');
-
+const socket = require('./socket');
 const connect = require('./db');
 
-connect('mongodb+srv://userPrueba:admin123@cluster0.6fhbn.mongodb.net/?retryWrites=true&w=majority')
+connect(config.dbUrl);
 
-const port = process.env.PORT || 3000;
 
-const app = express();
+app.use(cors());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+socket.connect(server);
 routerApi(app);
 
-app.listen(port, () => {
-    console.log('Mi port' + port);
-});
+app.use(express.static('public'));
+
+
+server.listen(3000, function () {
+    console.log('La aplicación está escuchando en '+ config.host +':' + config.port);
+}) ;

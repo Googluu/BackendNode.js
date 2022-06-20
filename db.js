@@ -1,6 +1,5 @@
 const db = require('mongoose');
 
-// db.Promise = global.Promise;
 db.Promise = global.Promise;
 function connect(uri) {
     db.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
