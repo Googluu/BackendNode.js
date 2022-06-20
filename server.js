@@ -1,10 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const routerApi = require('./routes');
+
+const port = process.env.PORT || 3000;
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', function(req, res) {
-    res.send('Hola');
-})
+routerApi(app);
 
-app.listen(3000);
-console.log('La aplicación está escuchando en http://localhost:3000');
+app.listen(port, () => {
+    console.log('Mi port' + port);
+});
